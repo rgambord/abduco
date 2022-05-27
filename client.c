@@ -25,11 +25,13 @@ static void client_restore_terminal(void) {
 	if (!has_term)
 		return;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_term);
+#if 0
 	if (alternate_buffer) {
 		printf("\033[?25h\033[?1049l");
 		fflush(stdout);
 		alternate_buffer = false;
 	}
+#endif
 }
 
 static void client_setup_terminal(void) {
@@ -47,12 +49,13 @@ static void client_setup_terminal(void) {
 	cur_term.c_cc[VMIN] = 1;
 	cur_term.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, &cur_term);
-
+#if 0
 	if (!alternate_buffer) {
 		printf("\033[?1049h\033[H");
 		fflush(stdout);
 		alternate_buffer = true;
 	}
+#endif
 }
 
 static int client_mainloop(void) {
